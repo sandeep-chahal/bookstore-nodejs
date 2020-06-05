@@ -9,6 +9,7 @@ const bookSchema = new mongoose.Schema({
 		maxLength: [50, "book name must be less then 50 characters"],
 		index: true,
 	},
+	img: String,
 	author: {
 		type: String,
 		trim: true,
