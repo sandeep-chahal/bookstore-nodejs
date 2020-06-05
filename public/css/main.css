@@ -1,0 +1,65 @@
+*,
+*:before,
+*:after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--primary-color: #ef4848;
+	--white-color: #fff;
+	--black: #484848;
+}
+
+html {
+	font-size: 62%;
+}
+
+body {
+	font-family: "poppins", sans-serif;
+	font-weight: 400;
+	color: var(--black-color);
+}
+
+/* nav bar */
+
+nav {
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem;
+}
+
+nav .logo {
+	text-decoration: none;
+	height: 3rem;
+	display: flex;
+	align-items: center;
+}
+nav .logo img {
+	height: 100%;
+}
+nav .logo h3 {
+	font-size: 2rem;
+	margin-left: 0.5rem;
+	color: var(--black);
+}
+nav .menu {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	width: 20vw;
+	list-style: none;
+}
+
+nav .menu .menu-item {
+	text-decoration: none;
+	font-size: 1.4rem;
+	color: var(--black);
+	transition: all 0.1s ease-out;
+}
+nav .menu .menu-item:hover {
+	color: #ef4848;
+}
