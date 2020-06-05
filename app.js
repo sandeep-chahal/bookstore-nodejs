@@ -15,7 +15,6 @@ app.use(express.static(easyPath("./public")));
 
 //routes
 app.get("/", (req, res, next) => {
-	console.log("gsdgsfg");
 	res.status(200).render("home");
 });
 

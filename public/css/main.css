@@ -63,3 +63,10 @@ nav .menu .menu-item {
 nav .menu .menu-item:hover {
 	color: #ef4848;
 }
+
+/* banner */
+.banner {
+	display: block;
+	margin: auto;
+	margin-top: 2rem;
+}
