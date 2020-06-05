@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
 const easyPath = require("./utils/easyPath")(__dirname);
+const bookRoute = require("./routes/book");
 
 const app = express();
 
@@ -14,15 +15,14 @@ app.set("views", easyPath("./views"));
 app.use(express.static(easyPath("./public")));
 
 //routes
-app.get("/", (req, res, next) => {
-	res.status(200).render("home");
-});
+app.use("/", bookRoute);
 
 // connect to db and start the server
 mongoose
 	.connect(process.env.MONGO_URI, {
 		useUnifiedTopology: true,
 		useNewUrlParser: true,
+		useCreateIndex: true,
 	})
 	.then(() => {
 		app.listen(process.env.PORT || 3000);
