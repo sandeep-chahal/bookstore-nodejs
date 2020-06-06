@@ -57,6 +57,11 @@ const bookSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now(),
 	},
+	tags: {
+		type: [String],
+		max: [5, "Tags can't be more than 5"],
+		min: [1, "Enter atleast 1 tag"],
+	},
 });
 
 module.exports = mongoose.model("Book", bookSchema);
