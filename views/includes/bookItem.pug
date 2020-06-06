@@ -5,3 +5,5 @@ mixin book-item(book)
         .cart-btn
             .book-price= `$${book.price}`
             img(src="img/cart.svg", alt="add to cart")
+        .quantity= `${book.quantity} left!`
+            

@@ -149,12 +149,17 @@ section.shop {
 .cart-btn img {
 	width: 3rem;
 	padding: 0.4rem;
-	background: var(--primary-color);
+	border: 1px solid var(--primary-color);
 	transition: all 0.2s ease-out;
 	cursor: pointer;
 }
 .cart-btn img:hover {
 	padding: 0.6rem;
+}
+.quantity {
+	text-align: center;
+	background-color: rgba(256, 0, 0, 0.1);
+	color: var(--primary-color);
 }
 
 /* category */
