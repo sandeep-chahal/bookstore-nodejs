@@ -20,6 +20,7 @@ body {
 	font-family: "poppins", sans-serif;
 	font-weight: 400;
 	color: var(--black-color);
+	overflow-x: hidden;
 }
 
 /* nav bar */
@@ -29,7 +30,8 @@ nav {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 1rem;
+	padding: 0.5rem;
+	border-bottom: 1px solid var(--primary-color);
 }
 
 nav .logo {
@@ -62,6 +64,11 @@ nav .menu .menu-item {
 }
 nav .menu .menu-item:hover {
 	color: #ef4848;
+}
+nav .signature {
+	font-family: "Sacramento";
+	font-size: 2.5rem;
+	margin-right: -2rem;
 }
 
 /* banner */
@@ -103,6 +110,7 @@ section.shop {
 	width: 15rem;
 	font-size: 1.1rem;
 	margin: 1rem 2rem 4rem 2rem;
+	border-bottom: 2px solid transparent;
 }
 
 .books .book-item .book-cover {
@@ -112,6 +120,9 @@ section.shop {
 .books .book-item:hover .book-cover {
 	box-shadow: 0.8rem 0.8rem var(--primary-color);
 }
+.books .book-item:hover {
+	border-bottom: 2px solid var(--primary-color);
+}
 
 .books .book-item a {
 	color: var(--black);
@@ -120,7 +131,56 @@ section.shop {
 }
 .books .book-item .book-name {
 	font-size: 1.5rem;
+	text-align: center;
 }
-.books .book-item .book-seller {
-	font-weight: 400;
+.books .book-item .book-price {
+	text-align: center;
+	font-weight: 700;
+	font-size: 1.5rem;
+}
+.cart-btn {
+	padding: 0.3rem 1rem;
+	width: 100%;
+	color: var(--primary-color);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.cart-btn img {
+	width: 3rem;
+	padding: 0.4rem;
+	background: var(--primary-color);
+	transition: all 0.2s ease-out;
+	cursor: pointer;
+}
+.cart-btn img:hover {
+	padding: 0.6rem;
+}
+
+/* category */
+.categories {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 2rem;
+}
+.categories .category {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: var(--black);
+	padding: 3rem;
+	transition: all 0.2s ease-out;
+}
+.categories .category:hover {
+	box-shadow: 0.5rem 0.5rem var(--primary-color),
+		-0.5rem -0.5rem var(--primary-color);
+}
+
+.categories .category .cat-icon {
+	width: 2rem;
+}
+.categories .category .cat-name {
+	font-size: 1.6rem;
+	margin-left: 1rem;
 }
