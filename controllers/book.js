@@ -8,3 +8,8 @@ exports.getBooks = catchAsyncError(async (req, res, next) => {
 	console.log(books[0]);
 	res.status(200).render("home", { books, current: "/" });
 });
+exports.getBook = catchAsyncError(async (req, res, next) => {
+	const book = await Book.findById(req.params.bookId);
+	res.json(book);
+	// res.status(200).render("home", { books, current: "/" });
+});
