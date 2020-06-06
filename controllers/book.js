@@ -2,6 +2,9 @@ const Book = require("../models/book");
 const catchAsyncError = require("../utils/cathcAsyncError");
 
 exports.getBooks = catchAsyncError(async (req, res, next) => {
-	const books = await Book.find();
+	const books = await Book.find()
+		.limit(10)
+		.select("-seller -author -summary -date -tags");
+	console.log(books[0]);
 	res.status(200).render("home", { books, current: "/" });
 });
