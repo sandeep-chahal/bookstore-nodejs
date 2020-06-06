@@ -67,6 +67,60 @@ nav .menu .menu-item:hover {
 /* banner */
 .banner {
 	display: block;
-	margin: auto;
-	margin-top: 2rem;
+	margin: 2rem auto;
+}
+
+/* shop */
+
+section.shop {
+	width: 80vw;
+	height: auto;
+	margin: 2rem auto;
+	padding: 2rem;
+}
+
+.shop-header {
+	display: flex;
+	align-items: center;
+	width: 80vw;
+}
+.shop-header img {
+	width: 2rem;
+}
+.shop-header h3 {
+	margin-left: 1rem;
+	font-weight: 400;
+	font-size: 1.8rem;
+}
+/* books */
+.books {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+.books .book-item {
+	padding: 0.5rem;
+	width: 15rem;
+	font-size: 1.1rem;
+	margin: 1rem 2rem 4rem 2rem;
+}
+
+.books .book-item .book-cover {
+	width: 100%;
+	transition: all 0.2s ease-out;
+}
+.books .book-item:hover .book-cover {
+	box-shadow: 0.8rem 0.8rem var(--primary-color);
+}
+
+.books .book-item a {
+	color: var(--black);
+	text-decoration: none;
+	display: block;
+}
+.books .book-item .book-name {
+	font-size: 1.5rem;
+}
+.books .book-item .book-seller {
+	font-weight: 400;
 }
