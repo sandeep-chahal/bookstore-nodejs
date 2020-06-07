@@ -1,8 +1,9 @@
-nav
-            a.logo(href="/")
-                img(src="../img/logo.svg", alt="logo")
-                h3 BookStore
-            .signature BookStore
-            ul.menu
-             li: a.menu-item(href="/sell") Sell
-             li: a.menu-item(href="/login") Login
+mixin nav(current,loggedIn)
+    nav
+        a.logo(href="/")
+            img(src="../img/logo.svg", alt="logo")
+            h3 BookStore
+        .signature BookStore
+        ul.menu
+            li: a.menu-item(href="/sell" data-active=`${current==="sell"}`) Sell
+            li: a.menu-item(href=`/${loggedIn?"logout":"login"}` data-active=`${current==="auth"}`)= `${loggedIn?"Logout":"Login"}`

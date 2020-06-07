@@ -22,10 +22,12 @@ const detectErrors = (req, res) => {
 };
 
 exports.getLogin = (req, res, next) => {
-	res.status(200).render("login");
+	if (req.user) return res.redirect("/");
+	res.status(200).render("login", { current: "auth" });
 };
 exports.getSignup = (req, res, next) => {
-	res.status(200).render("signup");
+	if (req.user) return res.redirect("/");
+	res.status(200).render("signup", { current: "auth" });
 };
 
 exports.postLogin = async (req, res, next) => {

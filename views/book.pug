@@ -1,6 +1,8 @@
 include includes/head
 body
     include includes/nav
+    +nav(current,loggedIn)
+    
     .book
         img.big-img(src=`${book.img}` alt=`${book.name} cover image`)
         .about-book

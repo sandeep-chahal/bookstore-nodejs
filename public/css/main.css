@@ -71,6 +71,10 @@ nav .signature {
 	margin-right: -2rem;
 }
 
+a[data-active="true"] {
+	color: var(--primary-color) !important;
+}
+
 /* banner */
 .banner {
 	display: block;
