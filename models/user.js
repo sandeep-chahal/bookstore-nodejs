@@ -4,20 +4,20 @@ const userSchema = new mongoose.Schema({
 	email: {
 		type: String,
 		trim: true,
-		unique: [true, "Email is already in use!"],
-		required: [true, "Enter your email!"],
-		maxLength: [50, "Email is too long!"],
+		unique: true,
+		required: true,
+		maxLength: 30,
 	},
 	name: {
 		type: String,
 		trim: true,
-		required: [true, "please enter your name!"],
-		minlength: [3, "name must be greater then 3 characters"],
-		maxLength: [30, "name must be less then 30 characters"],
+		required: true,
+		minlength: 2,
+		maxLength: 12,
 	},
 	password: {
 		type: String,
-		required: [true, "Please enter password!"],
+		required: true,
 	},
 	selling: [{ type: mongoose.Types.ObjectId, ref: "Book" }],
 });

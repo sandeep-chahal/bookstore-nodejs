@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 
 const catchAsyncError = require("../utils/cathcAsyncError");
 
@@ -17,6 +18,15 @@ exports.getSignup = (req, res, next) => {
 
 exports.postLogin = async (req, res, next) => {
 	try {
+		// checking validation errors
+		const error = validationResult(req);
+		console.log(error.array());
+		if (!error.isEmpty()) {
+			return res.json({
+				error: true,
+				errors: error.array().map((err) => err.msg),
+			});
+		}
 		const email = req.body.email;
 		const password = req.body.password;
 
@@ -38,8 +48,18 @@ exports.postLogin = async (req, res, next) => {
 	}
 };
 
-exports.postSingup = async (req, res, next) => {
+exports.postSignup = async (req, res, next) => {
 	try {
+		// checking validation errors
+		const error = validationResult(req);
+		console.log(error.array());
+		if (!error.isEmpty()) {
+			return res.json({
+				error: true,
+				errors: error.array().map((err) => err.msg),
+			});
+		}
+
 		const name = req.body.name;
 		const email = req.body.email;
 		const password = req.body.password;
