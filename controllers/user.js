@@ -4,9 +4,10 @@ var jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 
 const catchAsyncError = require("../utils/cathcAsyncError");
-
 const generateToken = (id) => {
-	return jwt.sign({ id }, process.env.JWT_SECRET);
+	return jwt.sign({ id }, process.env.JWT_SECRET, {
+		expiresIn: "30d",
+	});
 };
 
 const detectErrors = (req, res) => {
@@ -78,4 +79,9 @@ exports.postSignup = async (req, res, next) => {
 			message: "Something went wrong!",
 		});
 	}
+};
+
+exports.logout = (req, res, next) => {
+	res.cookie("jwt", "");
+	res.redirect("/");
 };
