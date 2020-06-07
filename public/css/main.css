@@ -303,7 +303,7 @@ section.shop {
 	background-color: var(--white-color);
 	color: var(--black);
 }
-.form .form-btn .disabled {
+.form .form-btn.disabled {
 	background-color: var(--black);
 	color: var(--white-color);
 	cursor: default;
