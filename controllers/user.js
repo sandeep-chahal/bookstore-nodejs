@@ -9,6 +9,18 @@ const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
+const detectErrors = (req, res) => {
+	const error = validationResult(req);
+	if (!error.isEmpty()) {
+		res.json({
+			error: true,
+			errors: error.array().map((err) => err.msg),
+		});
+		return true;
+	}
+	return false;
+};
+
 exports.getLogin = (req, res, next) => {
 	res.status(200).render("login");
 };
@@ -18,15 +30,9 @@ exports.getSignup = (req, res, next) => {
 
 exports.postLogin = async (req, res, next) => {
 	try {
-		// checking validation errors
-		const error = validationResult(req);
-		console.log(error.array());
-		if (!error.isEmpty()) {
-			return res.json({
-				error: true,
-				errors: error.array().map((err) => err.msg),
-			});
-		}
+		//check for validation error
+		if (detectErrors(req, res)) return;
+
 		const email = req.body.email;
 		const password = req.body.password;
 
@@ -50,15 +56,8 @@ exports.postLogin = async (req, res, next) => {
 
 exports.postSignup = async (req, res, next) => {
 	try {
-		// checking validation errors
-		const error = validationResult(req);
-		console.log(error.array());
-		if (!error.isEmpty()) {
-			return res.json({
-				error: true,
-				errors: error.array().map((err) => err.msg),
-			});
-		}
+		//check for validation error
+		if (detectErrors(req, res)) return;
 
 		const name = req.body.name;
 		const email = req.body.email;
