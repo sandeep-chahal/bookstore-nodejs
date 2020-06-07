@@ -10,6 +10,5 @@ exports.getBooks = catchAsyncError(async (req, res, next) => {
 });
 exports.getBook = catchAsyncError(async (req, res, next) => {
 	const book = await Book.findById(req.params.bookId);
-	res.json(book);
-	// res.status(200).render("home", { books, current: "/" });
+	res.status(200).render("book", { book, current: "/book" });
 });

@@ -1,0 +1,20 @@
+include includes/head
+body
+    include includes/nav
+    .book
+        img.big-img(src=`${book.img}` alt=`${book.name} cover image`)
+        .about-book
+            .book-meta
+                .book-name= book.name
+                .book-author= `by ${book.author}`
+                a.book-seller(href=`/seller/${book.seller.id}`)= `seller: ${book.seller.name}`
+                p.book-summary-header Book Summary
+                p.book-summary= book.summary
+            .book-buy-zone
+                .book-price
+                     .book-price-text price: 
+                     .book-price-number=` $${book.price}`
+                .add-to-cart Add to cart
+                div.extra inc. taxes
+                div.extra free delivery
+    
