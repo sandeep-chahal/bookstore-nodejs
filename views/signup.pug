@@ -1,0 +1,25 @@
+include includes/head
+body
+    include includes/nav
+    .form
+        h1.form-header Let's create you an account!
+        .input-wrapper
+            .input-group
+                label.email-label Name
+                input.form-name(type="text", name="name")
+            .input-group
+                label.email-label Email
+                input.form-email(type="email", name="email")
+            .input-group
+                label.password-label Password
+                input.form-password(type="password", name="password")
+            .input-group
+                label.confirm-password-label Confirm Password
+                input.form-confirm-password(type="password", name="password")
+            .form-btn Let's Go
+        .error Wrong Credentials!
+        a.redirect-link(href="/login") Already have an account?
+
+    script(src="js/signup.js")
+
+        

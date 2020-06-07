@@ -254,43 +254,41 @@ section.shop {
 }
 
 /* login */
-.login {
+.form {
 	width: 60%;
-	height: 30rem;
-	margin: 5rem auto 0;
+	margin: 2rem auto 0;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
 	align-items: center;
 	color: var(--black);
 }
 
-.login .input-wrapper {
+.form .input-wrapper {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
 	height: 50%;
 	width: 100%;
-	margin: 4rem 0;
+	margin: 2rem 0;
 }
 
-.login .input-group {
+.form .input-group {
 	display: flex;
 	flex-direction: column;
 	width: 40%;
 }
-.login label {
+.form label {
 	margin-bottom: 0.8rem;
 	font-size: 1.5rem;
 }
-.login input {
-	margin-bottom: 2rem;
+.form input {
+	margin-bottom: 1.5rem;
 	padding: 0.5rem 1rem;
 	width: 100%;
 	border: 1px solid var(--black);
 }
-.login .login-btn {
+.form .form-btn {
 	font-size: 1.6rem;
 	font-weight: 700;
 	background-color: var(--primary-color);
@@ -300,13 +298,19 @@ section.shop {
 	cursor: pointer;
 }
 
-.login .login-btn:hover {
+.form .form-btn:hover {
 	border: 2px solid var(--primary-color);
 	background-color: var(--white-color);
 	color: var(--black);
 }
+.form .form-btn .disabled {
+	background-color: var(--black);
+	color: var(--white-color);
+	cursor: default;
+	border: 2px solid transparent;
+}
 
-.login .forgot-password {
+.redirect-link {
 	text-decoration: none;
 	color: var(--black);
 }
@@ -316,4 +320,9 @@ section.shop {
 	font-size: 1.3rem;
 	font-weight: 700;
 	opacity: 0;
+}
+a[href="/signup"],
+a[href="/login"] {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
 }

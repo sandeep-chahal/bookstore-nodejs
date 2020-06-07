@@ -24,6 +24,12 @@ app.use(cookieParser());
 app.use(bookRoute);
 app.use(userRoute);
 
+// error handler
+app.use((err, req, res, next) => {
+	console.log("-------------------");
+	console.log(err, err.message);
+});
+
 // connect to db and start the server
 mongoose
 	.connect(process.env.MONGO_URI, {

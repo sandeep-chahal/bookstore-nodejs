@@ -1,20 +1,20 @@
 include includes/head
 body
     include includes/nav
-    .login
-        h1.login-header You are welcome to come in!
+    .form
+        h1.form-header You are welcome to come in!
         .input-wrapper
             .input-group
                 label.email-label Email
-                input.login-email(type="email", name="email")
+                input.form-email(type="email", name="email")
             .input-group
                 label.email-label Password
-                input.login-password(type="password", name="password")
-            .login-btn Let's Go
+                input.form-password(type="password", name="password")
+            .form-btn Let's Go
         .error Wrong Credentials!
-        a.forgot-password(href="/forgot-password") Forgot your password?
+        a.redirect-link(href="/signup") Signup!
+        a.redirect-link(href="/forgot-password") Forgot your password?
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     script(src="js/login.js")
 
         

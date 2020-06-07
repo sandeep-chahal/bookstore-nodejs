@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: [true, "Please enter password!"],
-		maxlength: [50, "password too long!"],
 	},
 	selling: [{ type: mongoose.Types.ObjectId, ref: "Book" }],
 });
