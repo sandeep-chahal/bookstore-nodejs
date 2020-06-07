@@ -10,11 +10,11 @@ body
             .input-group
                 label.email-label Password
                 input.form-password(type="password", name="password")
-            .form-btn Let's Go
-        .error Wrong Credentials!
+            .form-btn(data-type="login") Let's Go
+        .error-wrapper
         a.redirect-link(href="/signup") Signup!
         a.redirect-link(href="/forgot-password") Forgot your password?
 
-    script(src="js/login.js")
+    script(src="js/auth.js")
 
         

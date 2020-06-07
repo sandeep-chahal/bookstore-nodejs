@@ -314,12 +314,15 @@ section.shop {
 	text-decoration: none;
 	color: var(--black);
 }
+.error-wrapper {
+	text-align: center;
+	margin-bottom: 2rem;
+}
 
 .error {
 	color: var(--primary-color);
 	font-size: 1.3rem;
 	font-weight: 700;
-	opacity: 0;
 }
 a[href="/signup"],
 a[href="/login"] {

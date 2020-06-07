@@ -22,7 +22,7 @@ const signupValidator = [
 	check("email", "Invalid Email!")
 		.isEmail()
 		.trim()
-		.isLength({ max: [30, "Email is too long!"] })
+		.isLength({ max: 30 })
 		.normalizeEmail(),
 	body("Email").custom((email) => {
 		return User.findOne({ email }).then((user) => {
@@ -39,8 +39,8 @@ const signupValidator = [
 			min: 8,
 			max: 16,
 		}),
-	check("name", "Name must be min 2 and max 12 char long!").trim().isLength({
+	check("name", "Name must be min 2 and max 20 char long!").trim().isLength({
 		min: 2,
-		max: 12,
+		max: 20,
 	}),
 ];
