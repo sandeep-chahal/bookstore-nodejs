@@ -1,10 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+var cookieParser = require("cookie-parser");
 dotenv.config({ path: ".env" });
 
 const easyPath = require("./utils/easyPath")(__dirname);
 const bookRoute = require("./routes/book");
+const userRoute = require("./routes/user");
 
 const app = express();
 
@@ -13,9 +15,14 @@ app.set("view engine", "pug");
 app.set("views", easyPath("./views"));
 //serving static files
 app.use(express.static(easyPath("./public")));
+//parsing json data
+app.use(express.json());
+// cookie parse
+app.use(cookieParser());
 
 //routes
-app.use("/", bookRoute);
+app.use(bookRoute);
+app.use(userRoute);
 
 // connect to db and start the server
 mongoose
