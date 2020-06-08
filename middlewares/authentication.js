@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 			req.user = null;
 			return next();
 		}
-		const user = await User.findById(decodedToken.id).select("_id");
+		const user = await User.findById(decodedToken.id).select("_id name");
 		if (!user) {
 			req.user = null;
 			return next();

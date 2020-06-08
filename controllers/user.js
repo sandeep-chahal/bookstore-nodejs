@@ -1,8 +1,11 @@
+const fs = require("fs");
 const User = require("../models/user");
+const Book = require("../models/book");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 
+const easyPath = require("../utils/easyPath");
 const catchAsyncError = require("../utils/cathcAsyncError");
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -29,6 +32,19 @@ exports.getLogin = (req, res, next) => {
 exports.getSignup = (req, res, next) => {
 	if (req.user) return res.redirect("/");
 	res.status(200).render("signup", { current: "auth" });
+};
+
+exports.getDashboard = async (req, res, next) => {
+	if (!req.user) return res.redirect("/login");
+	res
+		.status(200)
+		.render("dashboard", { current: "dashboard", loggedIn: Boolean(req.user) });
+};
+exports.getSell = (req, res, next) => {
+	if (!req.user) return res.redirect("/login");
+	res
+		.status(200)
+		.render("sell", { current: "dashboard", loggedIn: Boolean(req.user) });
 };
 
 exports.postLogin = async (req, res, next) => {
@@ -84,4 +100,27 @@ exports.postSignup = async (req, res, next) => {
 exports.logout = (req, res, next) => {
 	res.cookie("jwt", "");
 	res.redirect("/");
+};
+
+exports.sell = async (req, res, next) => {
+	try {
+		if (!req.user) return res.status(401).redirect("/login");
+		console.log(req.user._id);
+		const book = await Book.create({
+			...req.body,
+			seller: {
+				name: req.user.name,
+				id: req.user._id,
+			},
+			img: `/uploads/${req.file.filename}`,
+		});
+		res.status(201).redirect("/book/" + book._id);
+	} catch (err) {
+		console.log(err.message);
+		if (req.file && req.file.filename) {
+			try {
+				fs.unlink(easyPath("../public/uploads/" + req.file.filename));
+			} catch (err) {}
+		}
+	}
 };

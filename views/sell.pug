@@ -1,0 +1,15 @@
+include includes/head
+body
+    include includes/nav
+    +nav(current,loggedIn)
+    form.sell-book-container(method="POST", action="/sell", enctype="multipart/form-data" name="sell-book")
+        .img
+            label.img-preview(for="img-picker")
+            input(type="file", name="img",id="img-picker",required=true )
+        .about
+            input(type="text", name="name", required=true,placeholder="Book Name" )
+            input(type="text", name="author", required=true,placeholder="Author" )
+            textarea(name="summary", cols="30", rows="10",required=true,placeholder="Book Summary" )
+            input(type="number", name="price",required=true,placeholder="Price" )
+            input(type="number", name="quantity", required=true,placeholder="Quantity" )
+            input.btn(type="submit" ,value="Goo!")
