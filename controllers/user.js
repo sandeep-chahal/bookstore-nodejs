@@ -105,7 +105,6 @@ exports.logout = (req, res, next) => {
 exports.sell = async (req, res, next) => {
 	try {
 		if (!req.user) return res.status(401).redirect("/login");
-		console.log(req.user._id);
 		const book = await Book.create({
 			...req.body,
 			seller: {
@@ -113,6 +112,9 @@ exports.sell = async (req, res, next) => {
 				id: req.user._id,
 			},
 			img: `/uploads/${req.file.filename}`,
+		});
+		await User.findByIdAndUpdate(req.user._id, {
+			$push: { selling: book._id },
 		});
 		res.status(201).redirect("/book/" + book._id);
 	} catch (err) {
