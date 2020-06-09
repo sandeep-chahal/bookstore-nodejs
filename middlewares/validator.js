@@ -6,10 +6,10 @@ module.exports = (type) => {
 	switch (type) {
 		case "signup":
 			return signupValidator;
-			break;
 		case "login":
 			return loginValidator;
-			break;
+		case "sell":
+			return sellValidator;
 	}
 };
 
@@ -42,5 +42,35 @@ const signupValidator = [
 	check("name", "Name must be min 2 and max 20 char long!").trim().isLength({
 		min: 2,
 		max: 20,
+	}),
+];
+
+const sellValidator = [
+	check("name", "Book name must be between 3 and 30 char long!").isLength({
+		min: 3,
+		max: 30,
+	}),
+	body(
+		"author",
+		"Book Author name must be between 2 and 20 char long! "
+	).isLength({
+		min: 2,
+		max: 20,
+	}),
+	body("summary", "Summary must be between 10 and 700 char long!").isLength({
+		min: 10,
+		max: 700,
+	}),
+	body("price", "Price must be betwenn $1 and $100!").isNumeric().isInt({
+		min: 1,
+		max: 100,
+	}),
+	body("quantity", "Quantity must be more than 0!").isNumeric().isInt({
+		min: 1,
+	}),
+	body("tags", "Please enter tags, i.e novel,fiction").custom((val) => {
+		if (val && !val.split(",").length) {
+			return Promise.reject();
+		} else return true;
 	}),
 ];

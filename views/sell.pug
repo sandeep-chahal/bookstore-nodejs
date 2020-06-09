@@ -2,14 +2,20 @@ include includes/head
 body
     include includes/nav
     +nav(current,loggedIn)
-    form.sell-book-container(method="POST", action="/sell", enctype="multipart/form-data" name="sell-book")
+    -errors = errors || []
+    form.sell-book-container(method="POST", action="/sell", enctype="multipart/form-data")
         .img
             label.img-preview(for="img-picker")
-            input(type="file", name="img",id="img-picker",required=true )
+            input.file(type="file", name="img",id="img-picker",required=true)
+            each error in errors
+                .error= error
         .about
-            input(type="text", name="name", required=true,placeholder="Book Name" )
-            input(type="text", name="author", required=true,placeholder="Author" )
-            textarea(name="summary", cols="30", rows="10",required=true,placeholder="Book Summary" )
-            input(type="number", name="price",required=true,placeholder="Price" )
-            input(type="number", name="quantity", required=true,placeholder="Quantity" )
+            input(type="text", name="name", required=true,placeholder="Book Name"  ,value=`${values&&values.name?values.name:""}`)
+            input(type="text", name="author", required=true,placeholder="Author" ,value=`${values&&values.author?values.author:""}`)
+            textarea(name="summary", cols="30", rows="10",required=true,placeholder="Book Summary")= values&&values.summary?values.summary:""
+            input(type="number", name="price",required=true,placeholder="Price" ,value=`${values&&values.price?values.price:""}`)
+            input(type="number", name="quantity", required=true,placeholder="Quantity" ,value=`${values&&values.quantity?values.quantity:""}`)
+            input(type="text", name="tags", required=true,placeholder="tags: i.e novel,fiction" ,value=`${values&&values.tags?values.tags:""}`)
             input.btn(type="submit" ,value="Goo!")
+    script(src="js/filePreview.js")
+            

@@ -5,8 +5,9 @@ const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 
-const easyPath = require("../utils/easyPath");
-const catchAsyncError = require("../utils/cathcAsyncError");
+const easyPath = require("../utils/easyPath")(__dirname);
+const deleteFile = require("../utils/deleteFile");
+
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
 		expiresIn: "30d",
@@ -90,9 +91,8 @@ exports.postSignup = async (req, res, next) => {
 		res.status(200).json({ error: false, message: "success" });
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({
-			error: true,
-			message: "Something went wrong!",
+		res.status(500).render({
+			errors: ["Something went wrong!"],
 		});
 	}
 };
@@ -105,6 +105,9 @@ exports.logout = (req, res, next) => {
 exports.sell = async (req, res, next) => {
 	try {
 		if (!req.user) return res.status(401).redirect("/login");
+		//getting and sending errors
+		if (handleSellErrors(req, res)) return;
+
 		const book = await Book.create({
 			...req.body,
 			seller: {
@@ -118,11 +121,29 @@ exports.sell = async (req, res, next) => {
 		});
 		res.status(201).redirect("/book/" + book._id);
 	} catch (err) {
-		console.log(err.message);
-		if (req.file && req.file.filename) {
-			try {
-				fs.unlink(easyPath("../public/uploads/" + req.file.filename));
-			} catch (err) {}
-		}
+		console.log("error", err.message);
+		res.status(500).json({ error: true, errors: ["something went wrong!"] });
 	}
 };
+
+function handleSellErrors(req, res) {
+	const error = validationResult(req);
+	if (!error.isEmpty() || req.fileErrors) {
+		let errors = [];
+
+		if (!error.isEmpty()) errors = [...error.array().map((err) => err.msg)];
+		if (req.fileErrors) errors = [...errors, ...req.fileErrors];
+		console.log(errors);
+
+		if (!error.isEmpty())
+			deleteFile(easyPath(`../public/uploads/${req.file.filename}`));
+		res.status(400).render("sell", {
+			current: "sell",
+			loggedIn: true,
+			values: req.body,
+			errors: errors,
+		});
+		return true;
+	}
+	return false;
+}

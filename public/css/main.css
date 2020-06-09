@@ -197,10 +197,14 @@ section.shop {
 /* /book */
 .book {
 	display: flex;
-	width: 70%;
+	max-width: 70%;
 	margin: 4rem auto;
 	background-color: rgb(248, 248, 248);
 	padding: 4rem;
+}
+
+.book .big-img {
+	width: 40%;
 }
 
 .book .about-book {
@@ -382,6 +386,7 @@ a[href="/login"] {
 	margin: 5rem auto;
 	display: flex;
 	min-height: 70vh;
+	height: auto;
 	padding: 2rem;
 }
 
@@ -389,6 +394,7 @@ a[href="/login"] {
 	position: absolute;
 	top: 0;
 	z-index: -1;
+	opacity: 0;
 }
 .sell-book-container .img {
 	position: relative;
@@ -402,7 +408,8 @@ a[href="/login"] {
 	width: 100%;
 	background: url("../img/Book-Cover.jpg");
 	background-position: center;
-	background-size: cover;
+	background-size: contain;
+	background-repeat: no-repeat;
 	cursor: pointer;
 }
 

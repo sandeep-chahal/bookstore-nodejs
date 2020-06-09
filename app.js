@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 var cookieParser = require("cookie-parser");
-var multer = require("multer");
 dotenv.config({ path: ".env" });
 
 const easyPath = require("./utils/easyPath")(__dirname);
@@ -11,32 +10,19 @@ const userRoute = require("./routes/user");
 
 const app = express();
 
-//sset Storage Engine
-const storage = multer.diskStorage({
-	destination: easyPath("./public/uploads"),
-	filename: (req, file, cb) => {
-		cb(null, Date.now() + ".jpg");
-	},
-});
-// init upload
-const upload = multer({
-	storage,
-}).single("img");
-
 //setting view engine
 app.set("view engine", "pug");
 app.set("views", easyPath("./views"));
 //serving static files
 app.use(express.static(easyPath("./public")));
-//parsing json and form data
+//parsing json
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 // cookie parse
 app.use(cookieParser());
 
 //routes
 app.use(bookRoute);
-app.use(upload, userRoute);
+app.use(userRoute);
 
 // error handler
 app.use((err, req, res, next) => {
