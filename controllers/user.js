@@ -165,3 +165,22 @@ exports.remove = async (req, res) => {
 		console.log(err);
 	}
 };
+
+exports.restock = async (req, res) => {
+	console.log("object");
+	try {
+		const bookId = req.query.bookId;
+		const quantity = parseInt(req.query.quantity);
+		if (quantity < 0 || isNaN(quantity)) {
+			return res.json({ message: "error" });
+		}
+
+		await Book.findOneAndUpdate(
+			{ _id: bookId, "seller.id": req.user._id },
+			{ quantity: quantity }
+		);
+		res.json({ message: "success" });
+	} catch (err) {
+		console.log(err);
+	}
+};

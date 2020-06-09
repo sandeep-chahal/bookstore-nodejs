@@ -23,4 +23,5 @@ router.post(
 );
 
 router.delete("/remove/book", authentication, userController.remove);
+router.get("/restock/book", authentication, userController.restock);
 module.exports = router;
