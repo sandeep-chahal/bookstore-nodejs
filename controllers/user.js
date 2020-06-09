@@ -1,4 +1,3 @@
-const fs = require("fs");
 const User = require("../models/user");
 const Book = require("../models/book");
 const bcrypt = require("bcryptjs");
@@ -153,3 +152,16 @@ function handleSellErrors(req, res) {
 	}
 	return false;
 }
+
+exports.remove = async (req, res) => {
+	try {
+		const bookId = req.query.bookId;
+
+		await Book.findOneAndRemove({ _id: bookId, "seller.id": req.user._id });
+		await req.user.update({ $pull: { selling: bookId } });
+
+		res.json({ message: "success" });
+	} catch (err) {
+		console.log(err);
+	}
+};

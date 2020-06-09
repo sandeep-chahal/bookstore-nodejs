@@ -1,10 +1,10 @@
 mixin ownBookItem(book)
-    .book-item
+    .book-item(id=`${book._id}`)
         img.book-cover(src=`${book.img}`)
         .book-quantity-wrapper(title="restock")
             .book-quantity= book.quantity
             img.icon.book-restock(src="/img/bolt.svg")
-        .book-remove-btn(title="remove")
+        .book-remove-btn(title="remove", onclick=`removeBook('${book._id}',this)`)
             div remove
             img.icon(src="/img/close.svg")
         

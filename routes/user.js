@@ -22,4 +22,5 @@ router.post(
 	userController.sell
 );
 
+router.delete("/remove/book", authentication, userController.remove);
 module.exports = router;
