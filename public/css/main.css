@@ -379,7 +379,41 @@ a[href="/login"] {
 	height: 100%;
 }
 
-/* sell book */
+.dashboard .book-item .book-cover {
+	margin-bottom: 1.5rem;
+	width: 15rem;
+}
+
+.dashboard .book-quantity-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 1.5rem;
+	padding: 0.5rem;
+	cursor: pointer;
+}
+.dashboard .book-remove-btn {
+	text-align: center;
+	font-size: 1.3rem;
+	cursor: pointer;
+	padding: 0.5rem;
+}
+.dashboard .book-remove-btn {
+	color: var(--primary-color);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
+.dashboard .icon {
+	width: 2rem;
+	filter: contrast(0.8);
+}
+.dashboard .book-remove-btn:hover,
+.dashboard .book-quantity-wrapper:hover {
+	background-color: rgba(256, 0, 0, 0.1);
+}
+/* dashboard */
 .sell-book-container {
 	width: 70vw;
 	background-color: rgba(240, 240, 240, 0.5);

@@ -37,9 +37,15 @@ exports.getSignup = (req, res, next) => {
 
 exports.getDashboard = async (req, res, next) => {
 	if (!req.user) return res.redirect("/login");
-	res
-		.status(200)
-		.render("dashboard", { current: "dashboard", loggedIn: Boolean(req.user) });
+	const user = await User.findById(req.user._id)
+		.select("selling")
+		.populate("selling", "img quantity _id")
+		.sort("date");
+	res.status(200).render("dashboard", {
+		current: "dashboard",
+		loggedIn: Boolean(req.user),
+		books: user.selling,
+	});
 };
 exports.getSell = (req, res, next) => {
 	if (!req.user) return res.redirect("/login");

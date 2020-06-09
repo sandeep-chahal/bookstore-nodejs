@@ -2,5 +2,12 @@ include includes/head
 body
     include includes/nav
     +nav(current,loggedIn)
-    .sell-btn-wrapper
-        a.sell-btn(href="/sell") Sell
+    main.dashboard
+        .sell-btn-wrapper
+            a.sell-btn(href="/sell") Sell
+        .books
+            each book in books
+                include includes/ownBookItem
+                +ownBookItem(book)
+             
+    
