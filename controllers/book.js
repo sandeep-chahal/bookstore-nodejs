@@ -21,10 +21,18 @@ exports.getUserBook = async (req, res, next) => {
 	const user = await User.findById(req.params.sellerId)
 		.select("selling name")
 		.populate("selling", "-tag -__v");
-	console.log({ books: user.selling, name: user.name });
 	res.status(200).render("userBooks", {
 		loggedIn: req.user,
 		books: user.selling,
 		name: user.name,
+	});
+};
+exports.getCategoryBooks = async (req, res, next) => {
+	const books = await Book.find({ tag: req.params.tag });
+	console.log(books);
+	res.status(200).render("home", {
+		loggedIn: req.user,
+		books,
+		category: req.params.tag,
 	});
 };

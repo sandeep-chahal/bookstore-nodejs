@@ -8,5 +8,6 @@ const router = express.Router();
 router.get("/", authorization, bookController.getBooks);
 router.get("/book/:bookId", authorization, bookController.getBook);
 router.get("/seller/:sellerId", authorization, bookController.getUserBook);
+router.get("/category/:tag", authorization, bookController.getCategoryBooks);
 
 module.exports = router;

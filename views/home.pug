@@ -3,12 +3,13 @@ body
     include includes/nav
     +nav(current,loggedIn)
     include includes/category
+    +category(category)
     
-    img.banner(src="img/banner.png", alt="banner")
+    img.banner(src="/img/banner.png", alt="banner")
 
     section.shop
         .shop-header
-            img.shop-icon(src="img/shop.svg")
+            img.shop-icon(src="/img/shop.svg")
             h3.shop-text Shop 
 
         .books

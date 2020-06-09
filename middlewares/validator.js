@@ -68,9 +68,11 @@ const sellValidator = [
 	body("quantity", "Quantity must be more than 0!").isNumeric().isInt({
 		min: 1,
 	}),
-	body("tags", "Please enter tags, i.e novel,fiction").custom((val) => {
-		if (val && !val.split(",").length) {
-			return Promise.reject();
-		} else return true;
+	body(
+		"tag",
+		"Please enter a tag with betwenn 3 and 15 char long, i.e fiction"
+	).isLength({
+		min: 3,
+		max: 15,
 	}),
 ];

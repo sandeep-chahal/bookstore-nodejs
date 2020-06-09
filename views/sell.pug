@@ -15,7 +15,7 @@ body
             textarea(name="summary", cols="30", rows="10",required=true,placeholder="Book Summary")= values&&values.summary?values.summary:""
             input(type="number", name="price",required=true,placeholder="Price" ,value=`${values&&values.price?values.price:""}`)
             input(type="number", name="quantity", required=true,placeholder="Quantity" ,value=`${values&&values.quantity?values.quantity:""}`)
-            input(type="text", name="tags", required=true,placeholder="tags: i.e novel,fiction" ,value=`${values&&values.tags?values.tags:""}`)
+            input(type="text", name="tag", required=true,placeholder="tags: i.e novel,fiction" ,value=`${values&&values.tags?values.tags:""}`)
             input.btn(type="submit" ,value="Goo!")
     script(src="js/filePreview.js")
             
