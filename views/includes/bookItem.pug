@@ -4,6 +4,6 @@ mixin book-item(book)
         a(href=`/book/${book._id}`).book-name= book.name
         .cart-btn
             .book-price= `$${book.price}`
-            img(src="img/cart.svg", alt="add to cart")
+            img(src="/img/cart.svg", alt="add to cart")
         .quantity= `${book.quantity} left!`
             

@@ -1,0 +1,9 @@
+include includes/head
+body
+    include includes/nav
+    +nav(loggedIn)
+    h2.seller-books-header= `${name}'s shop`
+    .books
+        each book in books
+            include includes/bookItem
+            +book-item(book)

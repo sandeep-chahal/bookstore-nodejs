@@ -1,4 +1,5 @@
 const Book = require("../models/book");
+const User = require("../models/user");
 const catchAsyncError = require("../utils/cathcAsyncError");
 
 exports.getBooks = catchAsyncError(async (req, res, next) => {
@@ -15,3 +16,15 @@ exports.getBook = catchAsyncError(async (req, res, next) => {
 		.status(200)
 		.render("book", { book, current: "book", loggedIn: Boolean(req.user) });
 });
+
+exports.getUserBook = async (req, res, next) => {
+	const user = await User.findById(req.params.sellerId)
+		.select("selling name")
+		.populate("selling", "-tag -__v");
+	console.log({ books: user.selling, name: user.name });
+	res.status(200).render("userBooks", {
+		loggedIn: req.user,
+		books: user.selling,
+		name: user.name,
+	});
+};

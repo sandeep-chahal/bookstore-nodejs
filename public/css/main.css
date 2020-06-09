@@ -181,7 +181,8 @@ section.shop {
 	padding: 3rem;
 	transition: all 0.2s ease-out;
 }
-.categories .category:hover {
+.categories .category:hover,
+.categories .active {
 	box-shadow: 0.5rem 0.5rem var(--primary-color),
 		-0.5rem -0.5rem var(--primary-color);
 }
@@ -480,4 +481,12 @@ a[href="/login"] {
 	cursor: pointer;
 	background-color: var(--black);
 	color: var(--white-color);
+}
+
+/* seller page */
+.seller-books-header {
+	text-align: center;
+	font-size: 1.6rem;
+	color: var(--black);
+	margin: 2rem 0;
 }
