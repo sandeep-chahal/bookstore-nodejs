@@ -1,8 +1,8 @@
 mixin pagination(totalPages,currentPage)
     if(totalPages && currentPage)
         .pagination
-            if currentPage != 1
-            a.pagination-btn(href=`?page=${currentPage-1}`) Prev
+            if currentPage-1 >= 1
+                a.pagination-btn(href=`?page=${currentPage-1}`) Prev
 
             if currentPage-2 > 0
                 a.pagination-btn(class=`${currentPage === currentPage -2 ?"active":""}`,href=`?page=${currentPage-2}`)= currentPage-2
@@ -16,5 +16,5 @@ mixin pagination(totalPages,currentPage)
             if currentPage+3 <= totalPages
                 a.pagination-btn(class=`${currentPage === currentPage+3 ?"active":""}`,href=`?page=${currentPage+3}`)= currentPage+3
 
-            if currentPage != totalPages
-            a.pagination-btn(href=`?page=${currentPage+1}`) Next
+            if currentPage+1 <= totalPages
+                a.pagination-btn(href=`?page=${currentPage+1}`) Next

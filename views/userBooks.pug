@@ -7,3 +7,5 @@ body
         each book in books
             include includes/bookItem
             +book-item(book)
+    include includes/pagination
+    +pagination(parseInt(totalPages),parseInt(currentPage))

@@ -18,7 +18,7 @@ body
                 +book-item(book)
 
     include includes/pagination
-    +pagination(totalPages,currentPage)
+    +pagination(parseInt(totalPages),parseInt(currentPage))
     
                 
     script(src="/js/addToCart.js")
