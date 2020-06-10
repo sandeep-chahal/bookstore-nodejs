@@ -1,5 +1,5 @@
 mixin pagination(totalPages,currentPage)
-    if(totalPages && currentPage)
+    if totalPages > 1
         .pagination
             if currentPage-1 >= 1
                 a.pagination-btn(href=`?page=${currentPage-1}`) Prev
