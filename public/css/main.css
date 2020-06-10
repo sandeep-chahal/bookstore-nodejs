@@ -560,3 +560,26 @@ a[href="/login"] {
 	color: var(--white-color);
 	cursor: pointer;
 }
+
+/* pagination */
+
+.pagination {
+	margin: auto;
+	text-align: center;
+	margin-bottom: 5rem;
+}
+
+.pagination-btn {
+	text-decoration: none;
+	color: var(--primary-color);
+	font-size: 1.35rem;
+	border: 1px solid var(--primary-color);
+	padding: 0.3rem 0.8rem;
+	margin: 0 1rem;
+}
+
+.pagination-btn:hover,
+.pagination .active {
+	background-color: var(--primary-color);
+	color: var(--white-color);
+}

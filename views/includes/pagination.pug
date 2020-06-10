@@ -1,0 +1,20 @@
+mixin pagination(totalPages,currentPage)
+    if(totalPages && currentPage)
+        .pagination
+            if currentPage != 1
+            a.pagination-btn(href=`?page=${currentPage-1}`) Prev
+
+            if currentPage-2 > 0
+                a.pagination-btn(class=`${currentPage === currentPage -2 ?"active":""}`,href=`?page=${currentPage-2}`)= currentPage-2
+            if currentPage-1 > 0
+                a.pagination-btn(class=`${currentPage === currentPage-1 ?"active":""}`,href=`?page=${currentPage-1}`)= currentPage-1
+            a.pagination-btn(class=`${currentPage === currentPage ?"active":""}`,href=`?page=${currentPage}`)= currentPage
+            if currentPage+1 <= totalPages
+                a.pagination-btn(class=`${currentPage === currentPage+1 ?"active":""}`,href=`?page=${currentPage+1}`)= currentPage+1
+            if currentPage +2 <= totalPages
+                a.pagination-btn(class=`${currentPage === currentPage+2 ?"active":""}`,href=`?page=${currentPage+2}`)= currentPage+2
+            if currentPage+3 <= totalPages
+                a.pagination-btn(class=`${currentPage === currentPage+3 ?"active":""}`,href=`?page=${currentPage+3}`)= currentPage+3
+
+            if currentPage != totalPages
+            a.pagination-btn(href=`?page=${currentPage+1}`) Next

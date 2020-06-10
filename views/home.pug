@@ -16,5 +16,9 @@ body
             each book in books
                 include includes/bookItem
                 +book-item(book)
+
+    include includes/pagination
+    +pagination(totalPages,currentPage)
+    
                 
     script(src="/js/addToCart.js")
