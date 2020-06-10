@@ -6,5 +6,9 @@ function addToCart(bookId) {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({ bookId }),
-	});
+	})
+		.then((res) => res.json())
+		.then((data) => {
+			if (data.message === "success") window.location.href = "/cart";
+		});
 }

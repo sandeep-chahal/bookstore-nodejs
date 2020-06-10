@@ -200,7 +200,6 @@ exports.addToCart = async (req, res, next) => {
 				},
 			},
 		}).select("_id");
-		console.log(alreadyInCart);
 		// update  existing
 		if (alreadyInCart)
 			await User.findById(req.user._id).updateOne(
