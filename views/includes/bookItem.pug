@@ -2,7 +2,7 @@ mixin book-item(book)
     .book-item
         a(href=`/book/${book._id}`): img.book-cover(src=`${book.img}`)
         a(href=`/book/${book._id}`).book-name= book.name
-        .cart-btn
+        .cart-btn(onclick=`addToCart('${book._id}')`)
             .book-price= `$${book.price}`
             img(src="/img/cart.svg", alt="add to cart")
         .quantity= `${book.quantity} left!`

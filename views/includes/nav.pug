@@ -5,5 +5,6 @@ mixin nav(current,loggedIn)
             h3 BookStore
         .signature BookStore
         ul.menu
+            li: a.menu-item(href="/cart" data-active=`${current==="cart"}`) Cart
             li: a.menu-item(href="/dashboard" data-active=`${current==="dashboard"}`) Dashboard
             li: a.menu-item(href=`/${loggedIn?"logout":"login"}` data-active=`${current==="auth"}`)= `${loggedIn?"Logout":"Login"}`

@@ -1,0 +1,8 @@
+mixin cartItem(book)
+    .cart-item
+        a(href=`/book/${book.bookId}`).cart-item-name= book.name
+        .cart-item-meta
+            .cart-item.quantity= `qty: ${book.buyQuantity}`
+            .cart-item.quantity= `price: $${book.price*book.buyQuantity}`
+            .cart-item-remove(onclick=`removeFromCart('${book.bookId}')`) remove
+            

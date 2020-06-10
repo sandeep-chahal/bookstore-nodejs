@@ -7,6 +7,7 @@ const validator = require("../middlewares/validator");
 const authentication = require("../middlewares/authentication");
 const upload = require("../middlewares/fileUpload");
 
+router.get("/cart", authentication, userController.getCart);
 router.get("/login", authentication, userController.getLogin);
 router.get("/signup", authentication, userController.getSignup);
 router.post("/login", validator("login"), userController.postLogin);
@@ -24,4 +25,7 @@ router.post(
 
 router.delete("/remove/book", authentication, userController.remove);
 router.get("/restock/book", authentication, userController.restock);
+router.patch("/cart/add", authentication, userController.addToCart);
+router.delete("/cart/remove", authentication, userController.removeFromCart);
+
 module.exports = router;

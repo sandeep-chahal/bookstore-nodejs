@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
 		required: true,
 	},
 	selling: [{ type: mongoose.Types.ObjectId, ref: "Book" }],
+	cart: [
+		{
+			id: { type: mongoose.Types.ObjectId, ref: "Book" },
+			buyQuantity: Number,
+		},
+	],
 });
 
 module.exports = mongoose.model("User", userSchema);

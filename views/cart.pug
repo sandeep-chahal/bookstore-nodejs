@@ -1,0 +1,16 @@
+include includes/head
+body
+    include includes/nav
+    +nav(current,loggedIn)
+    .cart
+        h2.cart-header= `Cart ${!books.length?"is empty!":""}`
+        .cart-items
+            each book in books
+                include includes/cartItem
+                +cartItem(book)
+
+        if(books.length)
+            .cart-buy-zone
+                .order-btn= `$${totalPrice} Order!`
+                 
+    script(src="/js/cart.js")

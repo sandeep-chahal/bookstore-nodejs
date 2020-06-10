@@ -167,8 +167,9 @@ exports.remove = async (req, res) => {
 };
 
 exports.restock = async (req, res) => {
-	console.log("object");
 	try {
+		if (detectErrors(req, res)) return;
+
 		const bookId = req.query.bookId;
 		const quantity = parseInt(req.query.quantity);
 		if (quantity < 0 || isNaN(quantity)) {
@@ -183,4 +184,107 @@ exports.restock = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 	}
+};
+
+exports.addToCart = async (req, res, next) => {
+	try {
+		if (!req.user) return res.status(401).redirect("/");
+
+		const bookId = req.body.bookId;
+
+		const alreadyInCart = await User.findOne({
+			_id: req.user._id,
+			cart: {
+				$elemMatch: {
+					id: bookId,
+				},
+			},
+		}).select("_id");
+		console.log(alreadyInCart);
+		// update  existing
+		if (alreadyInCart)
+			await User.findById(req.user._id).updateOne(
+				{ "cart.id": bookId },
+				{
+					$inc: {
+						"cart.$.buyQuantity": 1,
+					},
+				},
+				(err) => {
+					console.log(err);
+				}
+			);
+		// add new
+		else
+			await User.findById(req.user._id).updateOne(
+				{
+					cart: {
+						$not: {
+							$elemMatch: {
+								id: bookId,
+							},
+						},
+					},
+				},
+				{
+					$push: {
+						cart: {
+							id: bookId,
+							buyQuantity: 1,
+						},
+					},
+				},
+				(err) => {
+					console.log(err);
+				}
+			);
+
+		res.json({ message: "success" });
+	} catch (err) {
+		console.log(err.message);
+	}
+};
+
+exports.getCart = async (req, res, next) => {
+	if (!req.user) return res.status(401).redirect("/login");
+
+	let books = await User.findById(req.user._id)
+		.select("cart")
+		.populate("cart.id", "name price quantity");
+	let totalPrice = 0;
+	books = books.cart
+		? books.cart.map((item) => {
+				totalPrice +=
+					item.id.price *
+					(item.id.quantity < item.buyQuantity
+						? item.id.quantity
+						: item.buyQuantity);
+				return {
+					name: item.id.name,
+					bookId: item.id._id,
+					price: item.id.price,
+					cartId: item._id,
+					buyQuantity:
+						item.id.quantity < item.buyQuantity
+							? item.id.quantity
+							: item.buyQuantity,
+				};
+		  })
+		: [];
+
+	res.render("cart", { books, totalPrice, loggedIn: true, current: "cart" });
+};
+
+exports.removeFromCart = async (req, res, next) => {
+	const bookId = req.body.bookId;
+
+	await User.findByIdAndUpdate(req.user._id, {
+		$pull: {
+			cart: {
+				id: bookId,
+			},
+		},
+	});
+
+	res.json({ message: "success" });
 };

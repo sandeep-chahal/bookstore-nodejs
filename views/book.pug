@@ -16,7 +16,7 @@ body
                 .book-price
                      .book-price-text price: 
                      .book-price-number=` $${book.price}`
-                .add-to-cart Add to cart
+                .add-to-cart(onclick=`addToCart('${book._id}')`) Add to cart
                 div.extra inc. taxes
                 div.extra free delivery
-    
+    script(src="/js/addToCart.js")
