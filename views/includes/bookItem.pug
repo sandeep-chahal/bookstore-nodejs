@@ -2,8 +2,9 @@ mixin book-item(book)
     .book-item
         a(href=`/book/${book._id}`): img.book-cover(src=`${book.img}`)
         a(href=`/book/${book._id}`).book-name= book.name
-        .cart-btn(onclick=`addToCart('${book._id}')`)
+        .cart-btn(onclick=book.quantity?`addToCart('${book._id}')`:"")
             .book-price= `$${book.price}`
-            img(src="/img/cart.svg", alt="add to cart")
-        .quantity= `${book.quantity} left!`
+            if book.quantity
+                img(src="/img/cart.svg", alt="add to cart")
+        .quantity= book.quantity ?`${book.quantity} left!`:"out of stock!"
             
