@@ -7,6 +7,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const easyPath = require("../utils/easyPath")(__dirname);
 const deleteFile = require("../utils/deleteFile");
+const book = require("../models/book");
 
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -328,6 +329,15 @@ exports.checkout = async (req, res, next) => {
 };
 
 exports.orderSuccess = async (req, res, next) => {
+	const { books } = await getCartItems(req.user._id);
+	books.forEach(async (book) => {
+		await Book.findByIdAndUpdate(book.bookId, {
+			$inc: {
+				quantity: -parseInt(book.buyQuantity),
+			},
+		});
+	});
+
 	await User.findByIdAndUpdate(req.user._id, { $set: { cart: [] } });
 	res.redirect("/cart");
 };
