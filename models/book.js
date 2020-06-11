@@ -6,7 +6,7 @@ const bookSchema = new mongoose.Schema({
 		trim: true,
 		required: true,
 		minlength: 3,
-		maxLength: 30,
+		maxLength: 50,
 		index: true,
 	},
 	img: String,
