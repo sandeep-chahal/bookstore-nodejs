@@ -24,10 +24,13 @@ app.use(cookieParser());
 app.use(bookRoute);
 app.use(userRoute);
 
+app.use((req, res, next) => {
+	res.redirect("/");
+});
+
 // error handler
 app.use((err, req, res, next) => {
-	console.log("-------------------");
-	console.log(err, err.message);
+	res.redirect("/");
 });
 
 // connect to db and start the server
