@@ -3,6 +3,7 @@ const Book = require("../models/book");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const easyPath = require("../utils/easyPath")(__dirname);
 const deleteFile = require("../utils/deleteFile");
@@ -244,34 +245,40 @@ exports.addToCart = async (req, res, next) => {
 	}
 };
 
-exports.getCart = async (req, res, next) => {
-	if (!req.user) return res.status(401).redirect("/login");
-
-	let books = await User.findById(req.user._id)
+const getCartItems = async (id) => {
+	let books = await User.findById(id)
 		.select("cart")
 		.populate("cart.id", "name price quantity");
 	let totalPrice = 0;
 	books = books.cart
-		? books.cart.map((item) => {
-				totalPrice +=
-					item.id.price *
-					(item.id.quantity < item.buyQuantity
-						? item.id.quantity
-						: item.buyQuantity);
-				return {
-					name: item.id.name,
-					bookId: item.id._id,
-					price: item.id.price,
-					cartId: item._id,
-					buyQuantity:
-						item.id.quantity < item.buyQuantity
+		? books.cart
+				.map((item) => {
+					if (!item || !item.id) return null;
+					totalPrice +=
+						item.id.price *
+						(item.id.quantity < item.buyQuantity
 							? item.id.quantity
-							: item.buyQuantity,
-				};
-		  })
+							: item.buyQuantity);
+					return {
+						name: item.id.name,
+						bookId: item.id._id,
+						price: item.id.price,
+						cartId: item._id,
+						buyQuantity:
+							item.id.quantity < item.buyQuantity
+								? item.id.quantity
+								: item.buyQuantity,
+					};
+				})
+				.filter((item) => item)
 		: [];
+	return { books, totalPrice };
+};
 
-	res.render("cart", { books, totalPrice, loggedIn: true, current: "cart" });
+exports.getCart = async (req, res, next) => {
+	if (!req.user) return res.status(401).redirect("/login");
+	const cart = await getCartItems(req.user._id);
+	res.render("cart", { ...cart, loggedIn: true, current: "cart" });
 };
 
 exports.removeFromCart = async (req, res, next) => {
@@ -286,4 +293,41 @@ exports.removeFromCart = async (req, res, next) => {
 	});
 
 	res.json({ message: "success" });
+};
+
+exports.checkout = async (req, res, next) => {
+	try {
+		if (!req.user) return res.status(401).redirect("/login");
+
+		const { books } = await getCartItems(req.user._id);
+
+		const session = await stripe.checkout.sessions.create({
+			payment_method_types: ["card"],
+			customer_email: req.user.email,
+			line_items: books.map((book) => {
+				return {
+					name: book.name,
+					amount: book.price * 100,
+					currency: "usd",
+					quantity: book.buyQuantity,
+				};
+			}),
+			mode: "payment",
+			success_url: `${req.protocol}://${req.get(
+				"host"
+			)}/ordered?session_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${req.protocol}://${req.get("host")}/cart`,
+		});
+
+		res.json({ session });
+	} catch (err) {
+		res.status(500).json({
+			message: "Something went wrong",
+		});
+	}
+};
+
+exports.orderSuccess = async (req, res, next) => {
+	await User.findByIdAndUpdate(req.user._id, { $set: { cart: [] } });
+	res.redirect("/cart");
 };

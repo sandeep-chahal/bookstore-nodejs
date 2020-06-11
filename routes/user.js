@@ -27,5 +27,7 @@ router.delete("/remove/book", authentication, userController.remove);
 router.get("/restock/book", authentication, userController.restock);
 router.patch("/cart/add", authentication, userController.addToCart);
 router.delete("/cart/remove", authentication, userController.removeFromCart);
+router.get("/checkout", authentication, userController.checkout);
+router.get("/ordered", authentication, userController.orderSuccess);
 
 module.exports = router;

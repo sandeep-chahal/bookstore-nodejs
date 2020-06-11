@@ -11,6 +11,7 @@ body
 
         if(books.length)
             .cart-buy-zone
-                .order-btn= `$${totalPrice} Order!`
-                 
+                .order-btn= `$${totalPrice} Checkout!`
+
+    script(src="https://js.stripe.com/v3/")
     script(src="/js/cart.js")
