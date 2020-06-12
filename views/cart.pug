@@ -13,5 +13,5 @@ body
             .cart-buy-zone
                 .order-btn= `$${totalPrice} Checkout!`
 
-    script(src="https://js.stripe.com/v3/")
-    script(src=assetUrl("/js/cart.js"))
+    script(src=assetUrl("https://js.stripe.com/v3/"),src2="https://js.stripe.com/v3/")
+    script(src=assetUrl("/js/cart.js"),src2="/js/cart.js")
