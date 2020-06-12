@@ -105,6 +105,12 @@ nav form button {
 	margin: 2rem auto;
 }
 
+.empty {
+	font-size: 2rem;
+	text-align: center;
+	margin-top: 5rem;
+}
+
 /* shop */
 
 section.shop {

@@ -11,11 +11,13 @@ body
         .shop-header
             img.shop-icon(src="/img/shop.svg")
             h3.shop-text= `${search?"Search result for"+search:"Shop"}` 
-    
-        .books
-            each book in books
-                include includes/bookItem
-                +book-item(book)
+        if books && books.length
+            .books
+                each book in books
+                    include includes/bookItem
+                    +book-item(book)
+        else
+            .empty No Books Found!
 
     include includes/pagination
     +pagination(parseInt(totalPages),parseInt(currentPage))
