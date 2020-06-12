@@ -10,6 +10,11 @@ const userRoute = require("./routes/user");
 
 const app = express();
 
+// tinify cdn
+app.locals.assetUrl = function (path) {
+	return "https://0t088q9y.tinifycdn.com/" + path;
+};
+
 //setting view engine
 app.set("view engine", "pug");
 app.set("views", easyPath("./views"));

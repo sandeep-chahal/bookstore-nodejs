@@ -5,7 +5,7 @@ body
     include includes/category
     +category(category)
     
-    img.banner(src="/img/banner.png", alt="banner")
+    img.banner(src=assetUrl("/img/banner.png"), alt="banner")
 
     section.shop
         .shop-header
@@ -23,4 +23,4 @@ body
     +pagination(parseInt(totalPages),parseInt(currentPage))
     
                 
-    script(src="/js/addToCart.js")
+    script(src=assetUrl("/js/addToCart.js"))

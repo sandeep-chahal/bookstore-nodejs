@@ -17,5 +17,5 @@ body
             input(type="number", name="quantity", required=true,placeholder="Quantity" ,value=`${values&&values.quantity?values.quantity:""}`)
             input(type="text", name="tag", required=true,placeholder="tags: i.e novel,fiction" ,value=`${values&&values.tags?values.tags:""}`)
             input.btn(type="submit" ,value="Goo!")
-    script(src="js/filePreview.js")
+    script(src=assetUrl("js/filePreview.js"))
             
