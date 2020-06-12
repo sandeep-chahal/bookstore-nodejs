@@ -137,9 +137,12 @@ function handleSellErrors(req, res) {
 exports.remove = catchAsyncError(async (req, res) => {
 	const bookId = req.query.bookId;
 
-	await Book.findOneAndRemove({ _id: bookId, "seller.id": req.user._id });
+	const book = await Book.findOneAndRemove({
+		_id: bookId,
+		"seller.id": req.user._id,
+	});
+	deleteFile(easyPath(`public${book.img}`).replace("controllers", ""));
 	await req.user.update({ $pull: { selling: bookId } });
-
 	res.json({ message: "success" });
 });
 

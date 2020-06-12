@@ -7,7 +7,7 @@ mixin nav(current,loggedIn,search)
         ul.menu
             li
                 form(method="post",action="/search", enctype="application/json")
-                    input(type="text" name="search", value=`${search?search:""}`)
+                    input(type="text" name="search",placeholder="search min 5 char", value=`${search?search:""}`)
                     button.search-btn(type="submit")
             li: a.menu-item(href="/cart" data-active=`${current==="cart"}`) Cart
             li: a.menu-item(href="/dashboard" data-active=`${current==="dashboard"}`) Dashboard

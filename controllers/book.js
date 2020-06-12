@@ -56,6 +56,8 @@ exports.getCategoryBooks = catchAsyncError(async (req, res, next) => {
 exports.search = catchAsyncError(async (req, res, next) => {
 	const search = req.body.search;
 
+	if (!search && search.length > 5) return res.redirect("/");
+
 	const books = await Book.find({
 		$or: [
 			{ name: { $regex: search, $options: "i" } },
