@@ -7,7 +7,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const easyPath = require("../utils/easyPath")(__dirname);
 const deleteFile = require("../utils/deleteFile");
-const book = require("../models/book");
+const catchAsyncError = require("../utils/cathcAsyncError");
 
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -36,7 +36,7 @@ exports.getSignup = (req, res, next) => {
 	res.status(200).render("signup", { current: "auth" });
 };
 
-exports.getDashboard = async (req, res, next) => {
+exports.getDashboard = catchAsyncError(async (req, res, next) => {
 	if (!req.user) return res.redirect("/login");
 	const user = await User.findById(req.user._id)
 		.select("selling")
@@ -47,7 +47,7 @@ exports.getDashboard = async (req, res, next) => {
 		loggedIn: Boolean(req.user),
 		books: user.selling,
 	});
-};
+});
 exports.getSell = (req, res, next) => {
 	if (!req.user) return res.redirect("/login");
 	res
@@ -55,83 +55,62 @@ exports.getSell = (req, res, next) => {
 		.render("sell", { current: "dashboard", loggedIn: Boolean(req.user) });
 };
 
-exports.postLogin = async (req, res, next) => {
-	try {
-		//check for validation error
-		if (detectErrors(req, res)) return;
+exports.postLogin = catchAsyncError(async (req, res, next) => {
+	//check for validation error
+	if (detectErrors(req, res)) return;
 
-		const email = req.body.email;
-		const password = req.body.password;
+	const email = req.body.email;
+	const password = req.body.password;
 
-		const user = await User.findOne({ email });
-		if (!user || !(await bcrypt.compare(password, user.password)))
-			return res.status(400).json({
-				error: true,
-				message: "Wrong Credentials!",
-			});
-		const token = generateToken(user._id);
-		res.cookie("jwt", token);
-		res.status(200).json({ error: false, message: "success" });
-	} catch (err) {
-		console.log(err);
-		res.status(500).json({
+	const user = await User.findOne({ email });
+	if (!user || !(await bcrypt.compare(password, user.password)))
+		return res.status(400).json({
 			error: true,
-			message: "Something went wrong!",
+			message: "Wrong Credentials!",
 		});
-	}
-};
+	const token = generateToken(user._id);
+	res.cookie("jwt", token);
+	res.status(200).json({ error: false, message: "success" });
+});
 
-exports.postSignup = async (req, res, next) => {
-	try {
-		//check for validation error
-		if (detectErrors(req, res)) return;
+exports.postSignup = catchAsyncError(async (req, res, next) => {
+	//check for validation error
+	if (detectErrors(req, res)) return;
 
-		const name = req.body.name;
-		const email = req.body.email;
-		const password = req.body.password;
+	const name = req.body.name;
+	const email = req.body.email;
+	const password = req.body.password;
 
-		const encPassword = await bcrypt.hash(password, 12);
-		const user = await User.create({ name, email, password: encPassword });
+	const encPassword = await bcrypt.hash(password, 12);
+	const user = await User.create({ name, email, password: encPassword });
 
-		const token = generateToken(user._id);
-		res.cookie("jwt", token);
-		res.status(200).json({ error: false, message: "success" });
-	} catch (err) {
-		console.log(err);
-		res.status(500).render({
-			errors: ["Something went wrong!"],
-		});
-	}
-};
-
+	const token = generateToken(user._id);
+	res.cookie("jwt", token);
+	res.status(200).json({ error: false, message: "success" });
+});
 exports.logout = (req, res, next) => {
 	res.cookie("jwt", "");
 	res.redirect("/");
 };
 
-exports.sell = async (req, res, next) => {
-	try {
-		if (!req.user) return res.status(401).redirect("/login");
-		//getting and sending errors
-		if (handleSellErrors(req, res)) return;
+exports.sell = catchAsyncError(async (req, res, next) => {
+	if (!req.user) return res.status(401).redirect("/login");
+	//getting and sending errors
+	if (handleSellErrors(req, res)) return;
 
-		const book = await Book.create({
-			...req.body,
-			seller: {
-				name: req.user.name,
-				id: req.user._id,
-			},
-			img: `/uploads/${req.file.filename}`,
-		});
-		await User.findByIdAndUpdate(req.user._id, {
-			$push: { selling: book._id },
-		});
-		res.status(201).redirect("/book/" + book._id);
-	} catch (err) {
-		console.log("error", err.message);
-		res.status(500).json({ error: true, errors: ["something went wrong!"] });
-	}
-};
+	const book = await Book.create({
+		...req.body,
+		seller: {
+			name: req.user.name,
+			id: req.user._id,
+		},
+		img: `/uploads/${req.file.filename}`,
+	});
+	await User.findByIdAndUpdate(req.user._id, {
+		$push: { selling: book._id },
+	});
+	res.status(201).redirect("/book/" + book._id);
+});
 
 function handleSellErrors(req, res) {
 	const error = validationResult(req);
@@ -155,98 +134,86 @@ function handleSellErrors(req, res) {
 	return false;
 }
 
-exports.remove = async (req, res) => {
-	try {
-		const bookId = req.query.bookId;
+exports.remove = catchAsyncError(async (req, res) => {
+	const bookId = req.query.bookId;
 
-		await Book.findOneAndRemove({ _id: bookId, "seller.id": req.user._id });
-		await req.user.update({ $pull: { selling: bookId } });
+	await Book.findOneAndRemove({ _id: bookId, "seller.id": req.user._id });
+	await req.user.update({ $pull: { selling: bookId } });
 
-		res.json({ message: "success" });
-	} catch (err) {
-		console.log(err);
+	res.json({ message: "success" });
+});
+
+exports.restock = catchAsyncError(async (req, res) => {
+	if (detectErrors(req, res)) return;
+
+	const bookId = req.query.bookId;
+	const quantity = parseInt(req.query.quantity);
+	if (quantity < 0 || isNaN(quantity)) {
+		return res.json({ message: "error" });
 	}
-};
 
-exports.restock = async (req, res) => {
-	try {
-		if (detectErrors(req, res)) return;
+	await Book.findOneAndUpdate(
+		{ _id: bookId, "seller.id": req.user._id },
+		{ quantity: quantity }
+	);
+	res.json({ message: "success" });
+});
 
-		const bookId = req.query.bookId;
-		const quantity = parseInt(req.query.quantity);
-		if (quantity < 0 || isNaN(quantity)) {
-			return res.json({ message: "error" });
-		}
+exports.addToCart = catchAsyncError(async (req, res, next) => {
+	if (!req.user) return res.status(401).redirect("/");
 
-		await Book.findOneAndUpdate(
-			{ _id: bookId, "seller.id": req.user._id },
-			{ quantity: quantity }
-		);
-		res.json({ message: "success" });
-	} catch (err) {
-		console.log(err);
-	}
-};
+	const bookId = req.body.bookId;
 
-exports.addToCart = async (req, res, next) => {
-	try {
-		if (!req.user) return res.status(401).redirect("/");
-
-		const bookId = req.body.bookId;
-
-		const alreadyInCart = await User.findOne({
-			_id: req.user._id,
-			cart: {
-				$elemMatch: {
-					id: bookId,
+	const alreadyInCart = await User.findOne({
+		_id: req.user._id,
+		cart: {
+			$elemMatch: {
+				id: bookId,
+			},
+		},
+	}).select("_id");
+	// update  existing
+	if (alreadyInCart)
+		await User.findById(req.user._id).updateOne(
+			{ "cart.id": bookId },
+			{
+				$inc: {
+					"cart.$.buyQuantity": 1,
 				},
 			},
-		}).select("_id");
-		// update  existing
-		if (alreadyInCart)
-			await User.findById(req.user._id).updateOne(
-				{ "cart.id": bookId },
-				{
-					$inc: {
-						"cart.$.buyQuantity": 1,
-					},
-				},
-				(err) => {
-					console.log(err);
-				}
-			);
-		// add new
-		else
-			await User.findById(req.user._id).updateOne(
-				{
-					cart: {
-						$not: {
-							$elemMatch: {
-								id: bookId,
-							},
-						},
-					},
-				},
-				{
-					$push: {
-						cart: {
+			(err) => {
+				console.log(err);
+			}
+		);
+	// add new
+	else
+		await User.findById(req.user._id).updateOne(
+			{
+				cart: {
+					$not: {
+						$elemMatch: {
 							id: bookId,
-							buyQuantity: 1,
 						},
 					},
 				},
-				(err) => {
-					console.log(err);
-				}
-			);
+			},
+			{
+				$push: {
+					cart: {
+						id: bookId,
+						buyQuantity: 1,
+					},
+				},
+			},
+			(err) => {
+				console.log(err);
+			}
+		);
 
-		res.json({ message: "success" });
-	} catch (err) {
-		console.log(err.message);
-	}
-};
+	res.json({ message: "success" });
+});
 
-const getCartItems = async (id) => {
+const getCartItems = catchAsyncError(async (id) => {
 	let books = await User.findById(id)
 		.select("cart")
 		.populate("cart.id", "name price quantity");
@@ -274,15 +241,15 @@ const getCartItems = async (id) => {
 				.filter((item) => item)
 		: [];
 	return { books, totalPrice };
-};
+});
 
-exports.getCart = async (req, res, next) => {
+exports.getCart = catchAsyncError(async (req, res, next) => {
 	if (!req.user) return res.status(401).redirect("/login");
 	const cart = await getCartItems(req.user._id);
 	res.render("cart", { ...cart, loggedIn: true, current: "cart" });
-};
+});
 
-exports.removeFromCart = async (req, res, next) => {
+exports.removeFromCart = catchAsyncError(async (req, res, next) => {
 	const bookId = req.body.bookId;
 
 	await User.findByIdAndUpdate(req.user._id, {
@@ -294,41 +261,35 @@ exports.removeFromCart = async (req, res, next) => {
 	});
 
 	res.json({ message: "success" });
-};
+});
 
-exports.checkout = async (req, res, next) => {
-	try {
-		if (!req.user) return res.status(401).redirect("/login");
+exports.checkout = catchAsyncError(async (req, res, next) => {
+	if (!req.user) return res.status(401).redirect("/login");
 
-		const { books } = await getCartItems(req.user._id);
+	const { books } = await getCartItems(req.user._id);
 
-		const session = await stripe.checkout.sessions.create({
-			payment_method_types: ["card"],
-			customer_email: req.user.email,
-			line_items: books.map((book) => {
-				return {
-					name: book.name,
-					amount: book.price * 100,
-					currency: "usd",
-					quantity: book.buyQuantity,
-				};
-			}),
-			mode: "payment",
-			success_url: `${req.protocol}://${req.get(
-				"host"
-			)}/ordered?session_id={CHECKOUT_SESSION_ID}`,
-			cancel_url: `${req.protocol}://${req.get("host")}/cart`,
-		});
+	const session = await stripe.checkout.sessions.create({
+		payment_method_types: ["card"],
+		customer_email: req.user.email,
+		line_items: books.map((book) => {
+			return {
+				name: book.name,
+				amount: book.price * 100,
+				currency: "usd",
+				quantity: book.buyQuantity,
+			};
+		}),
+		mode: "payment",
+		success_url: `${req.protocol}://${req.get(
+			"host"
+		)}/ordered?session_id={CHECKOUT_SESSION_ID}`,
+		cancel_url: `${req.protocol}://${req.get("host")}/cart`,
+	});
 
-		res.json({ session });
-	} catch (err) {
-		res.status(500).json({
-			message: "Something went wrong",
-		});
-	}
-};
+	res.json({ session });
+});
 
-exports.orderSuccess = async (req, res, next) => {
+exports.orderSuccess = catchAsyncError(async (req, res, next) => {
 	const { books } = await getCartItems(req.user._id);
 	books.forEach(async (book) => {
 		await Book.findByIdAndUpdate(book.bookId, {
@@ -340,4 +301,4 @@ exports.orderSuccess = async (req, res, next) => {
 
 	await User.findByIdAndUpdate(req.user._id, { $set: { cart: [] } });
 	res.redirect("/cart");
-};
+});

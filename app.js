@@ -26,12 +26,12 @@ app.use(bookRoute);
 app.use(userRoute);
 
 app.use((req, res, next) => {
-	res.redirect("/");
+	res.status(404).render("error", { msg: "Page Doesn't Exist!" });
 });
 
 // error handler
 app.use((err, req, res, next) => {
-	res.redirect("/");
+	res.status(404).redirect("error", { msg: "Something went wrong!" });
 });
 
 // connect to db and start the server

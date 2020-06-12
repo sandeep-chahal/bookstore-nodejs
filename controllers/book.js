@@ -26,7 +26,7 @@ exports.getBook = catchAsyncError(async (req, res, next) => {
 		.render("book", { book, current: "book", loggedIn: Boolean(req.user) });
 });
 
-exports.getUserBook = async (req, res, next) => {
+exports.getUserBook = catchAsyncError(async (req, res, next) => {
 	const user = await User.findById(req.params.sellerId)
 		.select("selling name")
 
@@ -37,8 +37,8 @@ exports.getUserBook = async (req, res, next) => {
 		books: user.selling,
 		name: user.name,
 	});
-};
-exports.getCategoryBooks = async (req, res, next) => {
+});
+exports.getCategoryBooks = catchAsyncError(async (req, res, next) => {
 	const query = Book.find({ tag: req.params.tag });
 	const paginationData = await pagination(req, query);
 
@@ -51,9 +51,9 @@ exports.getCategoryBooks = async (req, res, next) => {
 		category: req.params.tag,
 		...paginationData,
 	});
-};
+});
 
-exports.search = async (req, res, next) => {
+exports.search = catchAsyncError(async (req, res, next) => {
 	const search = req.body.search;
 
 	const books = await Book.find({
@@ -62,12 +62,10 @@ exports.search = async (req, res, next) => {
 			{ author: { $regex: search, $options: "i" } },
 		],
 	});
-	res
-		.status(200)
-		.render("home", {
-			books,
-			current: "search",
-			loggedIn: Boolean(req.user),
-			search,
-		});
-};
+	res.status(200).render("home", {
+		books,
+		current: "search",
+		loggedIn: Boolean(req.user),
+		search,
+	});
+});
