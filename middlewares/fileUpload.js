@@ -1,5 +1,5 @@
 var multer = require("multer");
-
+const sharp = require("sharp");
 const easyPath = require("../utils/easyPath")(__dirname);
 
 //set Storage Engine
@@ -19,7 +19,7 @@ const fileFilter = (req, file, callback) => {
 
 // init upload
 const upload = multer({
-	storage,
+	storage: multer.memoryStorage(),
 	fileFilter,
 	limits: {
 		fileSize: 1024 * 1024 * 5,
@@ -35,6 +35,15 @@ module.exports = (req, res, next) => {
 				errors.push("Please upload file with less than 5MB size!");
 			else if (!req.file) errors.push("please upload a valid image file");
 			req.fileErrors = errors;
+		}
+		if (req.file.buffer) {
+			const fileName = String(Date.now()) + ".jpeg";
+			sharp(req.file.buffer)
+				.resize(600, 900)
+				.toFormat("jpeg")
+				.jpeg({ quality: 80 })
+				.toFile(`public/uploads/${fileName}`);
+			req.file.filename = fileName;
 		}
 		next();
 	});

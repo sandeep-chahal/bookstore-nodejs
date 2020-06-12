@@ -5,11 +5,11 @@ body
     include includes/category
     +category(category)
     
-    img.banner(src=assetUrl("/img/banner.png"), src2="/img/banner.png", alt="banner")
+    img.banner(src="/img/banner.png", alt="banner")
 
     section.shop
         .shop-header
-            img.shop-icon(src=assetUrl("/img/shop.svg"),src2="/img/shop.svg")
+            img.shop-icon(src="/img/shop.svg")
             h3.shop-text= `${search?"Search result for"+search:"Shop"}` 
         if books && books.length
             .books
@@ -23,4 +23,4 @@ body
     +pagination(parseInt(totalPages),parseInt(currentPage))
     
                 
-    script(src=assetUrl("/js/addToCart.js"),src2="/js/addToCart.js")
+    script(src="/js/addToCart.js")

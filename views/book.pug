@@ -4,7 +4,7 @@ body
     +nav(current,loggedIn)
     
     .book
-        img.big-img(src=assetUrl(`${book.img}`), alt=`${book.name} cover image`)
+        img.big-img(src=`${book.img}`, alt=`${book.name} cover image`)
         .about-book
             .book-meta
                 .book-name= book.name
@@ -22,4 +22,4 @@ body
                     div out of stock
                 div.extra inc. taxes
                 div.extra free delivery
-    script(src=assetUrl("/js/addToCart.js"),src2="/js/addToCart.js")
+    script(src="/js/addToCart.js")
