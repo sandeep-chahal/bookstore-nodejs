@@ -1,7 +1,7 @@
 include includes/head
 body
     include includes/nav
-    +nav(current,loggedIn)
+    +nav(current,loggedIn,search)
     include includes/category
     +category(category)
     
@@ -10,8 +10,8 @@ body
     section.shop
         .shop-header
             img.shop-icon(src="/img/shop.svg")
-            h3.shop-text Shop 
-
+            h3.shop-text= `${search?"Search result for"+search:"Shop"}` 
+    
         .books
             each book in books
                 include includes/bookItem

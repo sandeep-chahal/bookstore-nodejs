@@ -26,7 +26,7 @@ body {
 /* nav bar */
 
 nav {
-	width: 100vw;
+	max-width: 100vw;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -52,7 +52,7 @@ nav .menu {
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
-	width: 20vw;
+	width: 30vw;
 	list-style: none;
 }
 
@@ -68,11 +68,35 @@ nav .menu .menu-item:hover {
 nav .signature {
 	font-family: "Sacramento";
 	font-size: 2.5rem;
-	margin-right: -2rem;
+	margin-right: -15rem;
 }
 
 a[data-active="true"] {
 	color: var(--primary-color) !important;
+}
+
+nav form {
+	display: flex;
+	align-items: center;
+}
+nav form input {
+	border-radius: 1rem;
+	border: 1px solid var(--black);
+	outline: none;
+	max-width: 15rem;
+	color: var(--black);
+	padding: 3px;
+}
+nav form button {
+	background: url("/img/search.svg");
+	width: 2rem;
+	height: 2rem;
+	border: none;
+	outline: none;
+	background-size: cover;
+	background-position: center;
+	margin-left: 1rem;
+	cursor: pointer;
 }
 
 /* banner */

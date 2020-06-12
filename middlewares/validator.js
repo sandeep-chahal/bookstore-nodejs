@@ -46,7 +46,7 @@ const signupValidator = [
 ];
 
 const sellValidator = [
-	check("name", "Book name must be between 3 and 30 char long!").isLength({
+	check("name", "Book name must be between 3 and 50 char long!").isLength({
 		min: 3,
 		max: 50,
 	}),

@@ -52,3 +52,22 @@ exports.getCategoryBooks = async (req, res, next) => {
 		...paginationData,
 	});
 };
+
+exports.search = async (req, res, next) => {
+	const search = req.body.search;
+
+	const books = await Book.find({
+		$or: [
+			{ name: { $regex: search, $options: "i" } },
+			{ author: { $regex: search, $options: "i" } },
+		],
+	});
+	res
+		.status(200)
+		.render("home", {
+			books,
+			current: "search",
+			loggedIn: Boolean(req.user),
+			search,
+		});
+};

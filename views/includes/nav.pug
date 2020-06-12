@@ -1,10 +1,14 @@
-mixin nav(current,loggedIn)
+mixin nav(current,loggedIn,search)
     nav
         a.logo(href="/")
             img(src="/img/logo.svg", alt="logo")
             h3 BookStore
         .signature BookStore
         ul.menu
+            li
+                form(method="post",action="/search", enctype="application/json")
+                    input(type="text" name="search", value=`${search?search:""}`)
+                    button.search-btn(type="submit")
             li: a.menu-item(href="/cart" data-active=`${current==="cart"}`) Cart
             li: a.menu-item(href="/dashboard" data-active=`${current==="dashboard"}`) Dashboard
             li: a.menu-item(href=`/${loggedIn?"logout":"login"}` data-active=`${current==="auth"}`)= `${loggedIn?"Logout":"Login"}`

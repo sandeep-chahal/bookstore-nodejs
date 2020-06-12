@@ -15,8 +15,9 @@ app.set("view engine", "pug");
 app.set("views", easyPath("./views"));
 //serving static files
 app.use(express.static(easyPath("./public")));
-//parsing json
+//parsing json and form data
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 // cookie parse
 app.use(cookieParser());
 
