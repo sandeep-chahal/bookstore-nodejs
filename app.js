@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-	res.status(500).redirect("error", { msg: "Something went wrong!" });
+	res.status(500).render("error", { msg: "Something went wrong!" });
 });
 
 // connect to db and start the server
