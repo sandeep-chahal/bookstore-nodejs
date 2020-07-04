@@ -23,6 +23,9 @@ npm install
 npm run start:dev
 ```
 
+### Screenshot
+[Book-Store-Img](https://i.imgur.com/8JXjBG5.jpg)
+
 
 
 
